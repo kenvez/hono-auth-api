@@ -1,16 +1,16 @@
-import { Client } from 'pg';
+import { Pool } from 'pg';
 
-const client = new Client({
+const pool = new Pool({
     connectionString: process.env.DATABASE_URL
 });
 
 export async function connectDB() {
-    await client.connect()
-    console.log('Connected to database')
+    await pool.query('select 1');
+    console.log('Connected to database');
 }
 
 export async function createTables() {
-    await client.query(`
+    await pool.query(`
         create table if not exists users (
             id serial primary key,
             username varchar(255) unique not null,
@@ -21,4 +21,4 @@ export async function createTables() {
     console.log('Tables created');
 };
 
-export default client
+export default pool;
